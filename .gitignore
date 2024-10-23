@@ -1,0 +1,51 @@
+# .NET 8
+bin/
+obj/
+*.user
+*.suo
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[Rr]elease/*/
+x64/
+x86/
+arm/
+arm64/
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Rider
+.idea/
+*.sln.iml
+
+# User-specific files
+*.userprefs
+*.sln.cache
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+**/packages/*
+**/project.lock.json
+**/project.assets.json
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage results
+coverage/
+*.coverage
+*.coveragexml
+
+# Publish output
+/.vs/MyIdentitySolution/DesignTimeBuild
+/.vs/MyIdentitySolution/FileContentIndex
