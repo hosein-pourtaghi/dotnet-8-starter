@@ -49,3 +49,4 @@ coverage/
 # Publish output
 /.vs/MyIdentitySolution/DesignTimeBuild
 /.vs/MyIdentitySolution/FileContentIndex
+/.vs/
