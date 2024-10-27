@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -15,9 +16,9 @@ public class AccountController : ControllerBase
     private readonly IConfiguration _configuration;
     public AccountController(
         UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager
-,
-        IConfiguration configuration)
+        SignInManager<IdentityUser> signInManager,
+        IConfiguration configuration
+        )
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -56,6 +57,46 @@ public class AccountController : ControllerBase
         await _signInManager.SignOutAsync();
         return Ok();
     }
+
+    [HttpPost("validate")]
+    [Authorize]
+    public IActionResult ValidateToken()
+    {
+        var token = "";
+
+        if (Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
+        {
+            // Extract the token from the header
+            token = authorizationHeader.ToString().Replace("Bearer ", string.Empty).Trim();
+        }
+
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        try
+        {
+            var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true, 
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Identity").GetValue<string>("SecretKey")))
+            }, out SecurityToken validatedToken);
+
+            return Ok(new { isValid = true, claims = principal.Claims.Select(c => new { c.Type, c.Value }) });
+        }
+        catch (SecurityTokenExpiredException)
+        {
+            return Unauthorized(new { isValid = false, message = "Token has expired." });
+        }
+        catch (SecurityTokenException)
+        {
+            return Unauthorized(new { isValid = false, message = "Invalid token." });
+        }
+    }
+
+
+
 
     private string GenerateJwtToken(string email)
     {
