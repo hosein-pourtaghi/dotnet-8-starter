@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection; 
-using Microsoft.EntityFrameworkCore; // If using EF Core for Identity
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text; // If using EF Core for Identity
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,18 +13,47 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 /////
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); // Adjust based on your DB
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+    //,
+    //sqlOptions => sqlOptions.EnableRetryOnFailure(
+    //        maxRetryCount: 5, // Maximum number of retry attempts
+    //        maxRetryDelay: TimeSpan.FromSeconds(30), // Delay between retries
+    //        errorNumbersToAdd: null) // Optional: specific SQL error numbers to retry on
+    )
+); // Adjust based on your DB
+
+#region Identity
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddControllers();
-builder.Services.AddIdentityServerConfiguration();
+var key = Encoding.ASCII.GetBytes( builder.Configuration.GetSection("Identity").GetValue<string>("SecretKey")); // Use a secure key in production
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false; // Set to true in production
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+#endregion
 
 
 builder.Services.AddControllers();
 builder.Services.AddIdentityServerConfiguration();
+
+
 //builder.Services.AddIdentity<IdentityUser>()
 //        .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -53,7 +85,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -65,8 +97,14 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
-
-app.Run();
+try
+{
+    app.Run();
+}
+catch (Exception e)
+{
+    throw;
+}
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
