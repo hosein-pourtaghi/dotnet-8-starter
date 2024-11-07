@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Serilog;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using Serilog;
 
 public class LoggingMiddleware
 {
@@ -15,13 +17,17 @@ public class LoggingMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         var stopwatch = Stopwatch.StartNew();
+
+        // Capture the request body
         var requestBody = await ReadRequestBodyAsync(context);
         var queryParams = context.Request.QueryString.ToString();
         var requestHeaders = context.Request.Headers.ToString();
 
-        // Log request details
-        Log.Information("Handling request: {Method} {Path} {QueryParams} {RequestHeaders} {RequestBody}",
-            context.Request.Method, context.Request.Path, queryParams, requestHeaders, requestBody);
+        // Enrich log with request details
+        Log.ForContext("RequestBody", requestBody)
+           .ForContext("RequestHeaders", requestHeaders)
+           .ForContext("QueryParams", queryParams)
+           .Information("Handling request: {Method} {Path}", context.Request.Method, context.Request.Path);
 
         // Capture the original response body stream
         var originalResponseBodyStream = context.Response.Body;
@@ -41,8 +47,11 @@ public class LoggingMiddleware
             var responseHeaders = context.Response.Headers.ToString();
             stopwatch.Stop();
 
-            Log.Information("Finished handling request. Status Code: {StatusCode}, Time: {ElapsedMilliseconds}ms, ResponseHeaders: {ResponseHeaders}, ResponseBody: {ResponseBody}",
-                context.Response.StatusCode, stopwatch.ElapsedMilliseconds, responseHeaders, responseBodyText);
+            // Enrich log with response details
+            Log.ForContext("ResponseBody", responseBodyText)
+               .ForContext("ResponseHeaders", responseHeaders)
+               .Information("Finished handling request. Status Code: {StatusCode}, Time: {ElapsedMilliseconds}ms",
+                   context.Response.StatusCode, stopwatch.ElapsedMilliseconds);
 
             // Copy the contents of the new memory stream (responseBody) to the original stream
             await responseBody.CopyToAsync(originalResponseBodyStream);
