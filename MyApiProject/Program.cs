@@ -1,13 +1,15 @@
+using IdentityServerLibrary.Domain.entities;
+using LoggingLibrary;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using MyApiProject.Middlewares;
+using Microsoft.OpenApi.Models; 
 using System.Text; // If using EF Core for Identity
 
 
 var builder = WebApplication.CreateBuilder(args);
+Logging.AddSerilog(builder.Configuration);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -57,7 +59,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 #region Identity
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -93,6 +95,8 @@ builder.Services.AddIdentityServerConfiguration();
 /////
 var app = builder.Build();
 
+app.UseSerilogMiddleware();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -101,7 +105,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
+        c.RoutePrefix = "swagger"; // Set Swagger UI at the app's root
     });
 }
 

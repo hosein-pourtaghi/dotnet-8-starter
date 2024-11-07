@@ -6,6 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerLibrary", "IdentityServerLibrary\IdentityServerLibrary.csproj", "{A9C2DBA7-D487-420B-8C79-DB86C397D6B6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApiProject", "MyApiProject\MyApiProject.csproj", "{7E454611-F036-49D9-A46B-77E8B79A9763}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AC465C6F-3D5E-4A0A-A005-323475338521} = {AC465C6F-3D5E-4A0A-A005-323475338521}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingLibrary", "LoggingLibrary\LoggingLibrary.csproj", "{AC465C6F-3D5E-4A0A-A005-323475338521}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +26,15 @@ Global
 		{7E454611-F036-49D9-A46B-77E8B79A9763}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E454611-F036-49D9-A46B-77E8B79A9763}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E454611-F036-49D9-A46B-77E8B79A9763}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC465C6F-3D5E-4A0A-A005-323475338521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC465C6F-3D5E-4A0A-A005-323475338521}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC465C6F-3D5E-4A0A-A005-323475338521}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC465C6F-3D5E-4A0A-A005-323475338521}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1BC873FE-6138-4CD0-9C8C-19B92F6427C6}
 	EndGlobalSection
 EndGlobal

@@ -25,6 +25,11 @@ public class AccountController : ControllerBase
         _configuration = configuration;
     }
 
+    /// <summary>
+    /// Register user
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
@@ -38,7 +43,11 @@ public class AccountController : ControllerBase
     }
 
 
-
+    /// <summary>
+    /// login user
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginModel model)
     {
@@ -51,6 +60,10 @@ public class AccountController : ControllerBase
         return Unauthorized();
     }
 
+    /// <summary>
+    /// logout user
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
@@ -58,6 +71,10 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// validate token
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("validate")]
     [Authorize]
     public IActionResult ValidateToken()
