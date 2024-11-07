@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IdentityServerLibrary\IdentityServerLibrary.csproj" />
-    <ProjectReference Include="..\AccountControllerLibrary\AccountControllerLibrary.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,8 @@ obj/
 *.user
 *.suo
 *.sln.docstates
+.vs/*
+.vs
 
 # Build results
 [Dd]ebug/
@@ -49,4 +51,4 @@ coverage/
 # Publish output
 /.vs/MyIdentitySolution/DesignTimeBuild
 /.vs/MyIdentitySolution/FileContentIndex
-/.vs
+
