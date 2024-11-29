@@ -10,7 +10,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApiProject", "MyApiProjec
 		{AC465C6F-3D5E-4A0A-A005-323475338521} = {AC465C6F-3D5E-4A0A-A005-323475338521}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingLibrary", "LoggingLibrary\LoggingLibrary.csproj", "{AC465C6F-3D5E-4A0A-A005-323475338521}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggingLibrary", "LoggingLibrary\LoggingLibrary.csproj", "{AC465C6F-3D5E-4A0A-A005-323475338521}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExceptionLibrary", "ExceptionLibrary\ExceptionLibrary.csproj", "{2CF51E56-6F8B-4033-BB12-DB11CE8C5BDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crud-Generator", "Crud-Generator\Crud-Generator.csproj", "{8AC8C357-86EA-4711-B48B-E11210B51A20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +34,14 @@ Global
 		{AC465C6F-3D5E-4A0A-A005-323475338521}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC465C6F-3D5E-4A0A-A005-323475338521}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC465C6F-3D5E-4A0A-A005-323475338521}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CF51E56-6F8B-4033-BB12-DB11CE8C5BDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CF51E56-6F8B-4033-BB12-DB11CE8C5BDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CF51E56-6F8B-4033-BB12-DB11CE8C5BDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CF51E56-6F8B-4033-BB12-DB11CE8C5BDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AC8C357-86EA-4711-B48B-E11210B51A20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AC8C357-86EA-4711-B48B-E11210B51A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AC8C357-86EA-4711-B48B-E11210B51A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AC8C357-86EA-4711-B48B-E11210B51A20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
